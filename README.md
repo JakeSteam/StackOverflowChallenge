@@ -1,11 +1,13 @@
 # Stack Overflow Challenge
 
+This app allows searching for users on StackOverflow, and viewing limited information about them. It also has relatively comprehensive UI tests.
+
+The architecture is very simple due to only having one piece of functionality, and requiring activities instead of fragments. The project could easily be converted to MVP if further functionality was to be added.
+
+
 ## Setup instructions
 1. Check out repo
 2. Build!
-
-## Architecture
-Architecture is very simply due to only having one piece of functionality, and requiring activities instead of fragments. The project could easily be converted to MVP if further functionality was to be added.
 
 ## Libraries used
 * **UI**: AndroidX's appcompat, recyclerview, and constraintlayout
