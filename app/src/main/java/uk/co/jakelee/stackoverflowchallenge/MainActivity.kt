@@ -10,8 +10,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import uk.co.jakelee.stackoverflowchallenge.api.StackOverflowService
+import uk.co.jakelee.stackoverflowchallenge.model.User
+
+
 
 class MainActivity : AppCompatActivity() {
+    lateinit var users: List<User>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,11 +31,13 @@ class MainActivity : AppCompatActivity() {
         search_button.setOnClickListener { _ ->
             service.getUsers(
                 searchTerm = search_field.text.toString(),
-                key = BuildConfig.AUTH_CODE
+                clientId = BuildConfig.SO_CLIENT_ID,
+                clientSecret = BuildConfig.SO_CLIENT_SECRET
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    users = it.users
                     user_list.adapter = UserListAdapter(it.users)
                 }, {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()

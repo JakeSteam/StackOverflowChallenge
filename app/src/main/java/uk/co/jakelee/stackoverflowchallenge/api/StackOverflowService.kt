@@ -2,7 +2,6 @@ package uk.co.jakelee.stackoverflowchallenge.api
 
 import io.reactivex.Observable
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Query
 import uk.co.jakelee.stackoverflowchallenge.model.UserWrapper
 
@@ -14,6 +13,7 @@ interface StackOverflowService {
         @Query("sort") sort: String = "name",
         @Query("order") order: String = "desc",
         @Query("site") site: String = "stackoverflow",
-        @Header("key") key: String = ""
+        @Query("client_id") clientId: String = "",
+        @Query("client_secret") clientSecret: String = ""
     ): Observable<UserWrapper>
 }
