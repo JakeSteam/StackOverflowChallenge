@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.activity_user.*
 import uk.co.jakelee.stackoverflowchallenge.model.User
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class UserActivity : AppCompatActivity() {
 
@@ -50,8 +51,8 @@ class UserActivity : AppCompatActivity() {
         }
 
         val formatter = SimpleDateFormat(getString(R.string.user_registered_format), Locale.ENGLISH)
-        user_creation_date.text =
-                String.format(getString(R.string.user_registered), formatter.format(Date(it.created * 1000)))
+        val dateConverted = TimeUnit.SECONDS.toMillis(it.created)
+        user_creation_date.text = String.format(getString(R.string.user_registered), formatter.format(Date(dateConverted)))
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
