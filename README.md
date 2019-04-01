@@ -15,3 +15,9 @@ The architecture is very simple due to only having one piece of functionality, a
 * **Observables**: RxJava / RxAndroid
 * **Images**: Picasso
 * **UI Testing**: Espresso (core / intents / contrib), AndroidX's test runner & rules, OkHttp's MockWebServer
+
+## Notes
+* Fully Kotlin & AndroidX.
+* Location & age are hidden if they're not present (which is usually the case)
+* There is extra padding below badges on the user's profile, as per ASCII design. Unsure if intentional!
+* Written on a Windows machine, apologies for any cross-platform issues.

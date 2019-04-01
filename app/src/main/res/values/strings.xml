@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">User Search</string>
+    <string name="main_activity">User Search</string>
+    <string name="user_activity">User</string>
     <string name="search_prompt">Enter a search term</string>
     <string name="search_button">Search</string>
     <string name="user_image_desc">User profile image</string>

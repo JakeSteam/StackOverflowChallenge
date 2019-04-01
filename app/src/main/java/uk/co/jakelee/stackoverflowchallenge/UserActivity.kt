@@ -20,7 +20,6 @@ class UserActivity : AppCompatActivity() {
 
         if (intent?.extras?.getParcelable<User>(USER_EXTRA) != null) {
             val user = intent!!.extras!!.getParcelable<User>(USER_EXTRA)!!
-            title = user.name
             Picasso.get()
                 .load(user.avatar)
                 .placeholder(R.drawable.placeholder)
