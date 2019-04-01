@@ -25,7 +25,10 @@ class MainActivity : AppCompatActivity() {
         val service = retrofit.create(StackOverflowService::class.java)
 
         search_button.setOnClickListener { _ ->
-            service.getUsers(search_field.text.toString())
+            service.getUsers(
+                searchTerm = search_field.text.toString(),
+                key = BuildConfig.AUTH_CODE
+            )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

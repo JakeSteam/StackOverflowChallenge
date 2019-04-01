@@ -15,7 +15,7 @@ data class User (
     val created: Long,
 
     @SerializedName("location")
-    val location: String,
+    val location: String?,
 
     @SerializedName("age")
     val age: Int,
@@ -33,7 +33,7 @@ data class User (
         parcel.readInt(),
         parcel.readInt(),
         parcel.readLong(),
-        parcel.readString()!!,
+        parcel.readString(),
         parcel.readInt(),
         parcel.readString()!!,
         parcel.readString()!!,

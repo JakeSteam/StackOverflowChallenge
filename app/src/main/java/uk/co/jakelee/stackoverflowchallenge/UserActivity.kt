@@ -12,6 +12,7 @@ class UserActivity : AppCompatActivity() {
         setContentView(R.layout.activity_user)
 
         intent?.extras?.getParcelable<User>(USER_EXTRA)?.let {
+            title = it.name
             user_name.text = it.name
             user_reputation.text = it.reputation.toString()
             user_badges.text = it.badges.toString()
