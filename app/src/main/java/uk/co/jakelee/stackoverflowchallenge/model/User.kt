@@ -18,7 +18,7 @@ data class User (
     val location: String?,
 
     @SerializedName("age")
-    val age: Int,
+    val age: Int?,
 
     @SerializedName("profile_image")
     val avatar: String,
@@ -34,7 +34,7 @@ data class User (
         parcel.readInt(),
         parcel.readLong(),
         parcel.readString(),
-        parcel.readInt(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readParcelable(BadgeList::class.java.classLoader)!!
@@ -46,7 +46,7 @@ data class User (
         parcel.writeInt(reputation)
         parcel.writeLong(created)
         parcel.writeString(location)
-        parcel.writeInt(age)
+        parcel.writeValue(age)
         parcel.writeString(avatar)
         parcel.writeString(name)
         parcel.writeParcelable(badges, flags)
