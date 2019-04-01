@@ -1,6 +1,7 @@
 package uk.co.jakelee.stackoverflowchallenge
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,20 +16,23 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        search_button.setOnClickListener {
-            val retrofit = Retrofit.Builder()
-                .baseUrl("https://api.stackexchange.com/")
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-            val service = retrofit.create(StackOverflowService::class.java)
-            service.getUsers("abc")
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.stackexchange.com/")
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val service = retrofit.create(StackOverflowService::class.java)
+
+        search_button.setOnClickListener { _ ->
+            service.getUsers(search_field.text.toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    // pass to recyclerview
-                    val a = 123
-                }
+                .subscribe({
+                    user_list.adapter = UserListAdapter(it.users)
+                }, {
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                })
         }
     }
 }
