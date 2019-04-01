@@ -39,4 +39,16 @@
             tools:listitem="@layout/element_userrow"
             tools:itemCount="@integers/num_results"/>
 
+    <ProgressBar
+            android:id="@+id/loading_spinner"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/search_field"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone">
+    </ProgressBar>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,9 +2,11 @@ package uk.co.jakelee.stackoverflowchallenge
 
 import android.os.Bundle
 import android.widget.Toast
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Action
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Retrofit
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         search_button.setOnClickListener { _ ->
             if (!search_field.text.isEmpty())
+                displayLoading()
                 service.getUsers(
                     searchTerm = search_field.text.toString(),
                     results = resources.getInteger(R.integer.num_results)
@@ -33,11 +36,27 @@ class MainActivity : AppCompatActivity() {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
+                        hideLoading()
                         user_list.adapter = UserListAdapter(it.users)
                     }, {
+                        hideLoading()
                         Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                         user_list.adapter = UserListAdapter(listOf())
                     })
         }
+    }
+
+    fun displayLoading() {
+        search_field.isEnabled = false
+        search_button.isEnabled = false
+        user_list.alpha = 0.5f
+        loading_spinner.visibility = View.VISIBLE
+    }
+
+    fun hideLoading() {
+        search_field.isEnabled = true
+        search_button.isEnabled = true
+        user_list.alpha = 1f
+        loading_spinner.visibility = View.GONE
     }
 }
