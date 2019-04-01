@@ -1,82 +1,36 @@
-package uk.co.jakelee.stackoverflowchallenge;
+package uk.co.jakelee.stackoverflowchallenge
 
-import android.content.Intent;
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.ViewAssertion;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.view.View;
-import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import android.content.Intent
+import android.support.test.espresso.NoMatchingViewException
+import android.support.test.espresso.ViewAssertion
+import android.support.test.rule.ActivityTestRule
+import android.support.test.runner.AndroidJUnit4
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.CoreMatchers.is;
+import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.action.ViewActions.typeText
+import android.support.test.espresso.matcher.ViewMatchers.assertThat
+import android.support.test.espresso.matcher.ViewMatchers.withId
+import org.hamcrest.CoreMatchers.`is`
 
-@RunWith(AndroidJUnit4.class)
-public class MainActivityTest {
+@RunWith(AndroidJUnit4::class)
+class MainActivityTest {
 
-    @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class, true, false);
-    private MockWebServer server;
+    @get:Rule
+    var mActivityRule = ActivityTestRule<MainActivity>(MainActivity::class.java, true, false)
+    
+    private var server: MockWebServer? = null
 
-    @Before
-    public void setUp() throws Exception {
-        //super.setUp();
-        server = new MockWebServer();
-        server.start();
-        ApiConstants.BASE_URL = server.url("/").toString();
-    }
-
-    @Test
-    public void testQuoteIsShown() throws Exception {
-        server.enqueue(new MockResponse()
-                .setResponseCode(200)
-                .setBody(response));
-
-        Intent intent = new Intent();
-        mActivityRule.launchActivity(intent);
-
-        onView(withId(R.id.search_field)).perform(typeText("test"));
-        onView(withId(R.id.search_button)).perform(click());
-        onView(withId(R.id.user_list)).check(new RecyclerViewItemCountAssertion(2));
-    }
-
-
-    public class RecyclerViewItemCountAssertion implements ViewAssertion {
-        private final int expectedCount;
-
-        public RecyclerViewItemCountAssertion(int expectedCount) {
-            this.expectedCount = expectedCount;
-        }
-
-        @Override
-        public void check(View view, NoMatchingViewException noViewFoundException) {
-            if (noViewFoundException != null) {
-                throw noViewFoundException;
-            }
-
-            RecyclerView recyclerView = (RecyclerView) view;
-            RecyclerView.Adapter adapter = recyclerView.getAdapter();
-            assertThat(adapter.getItemCount(), is(expectedCount));
-        }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        server.shutdown();
-    }
-
-    private String response = "{  \n" +
+    private val response = "{  \n" +
             "   \"items\":[  \n" +
             "      {  \n" +
             "         \"badge_counts\":{  \n" +
@@ -130,6 +84,53 @@ public class MainActivityTest {
             "   \"has_more\":true,\n" +
             "   \"quota_max\":300,\n" +
             "   \"quota_remaining\":233\n" +
-            "}";
+            "}"
+
+    @Before
+    @Throws(Exception::class)
+    fun setUp() {
+        server = MockWebServer()
+        server!!.start()
+        ApiConstants.BASE_URL = server!!.url("/").toString()
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun fullFlowTest() {
+        server!!.enqueue(
+            MockResponse()
+                .setResponseCode(200)
+                .setBody(response)
+        )
+
+        val intent = Intent()
+        mActivityRule.launchActivity(intent)
+
+        onView(withId(R.id.search_field)).perform(typeText("test"))
+        onView(withId(R.id.search_button)).perform(click())
+        onView(withId(R.id.user_list)).check(RecyclerViewItemCountAssertion(2))
+
+
+    }
+
+
+    inner class RecyclerViewItemCountAssertion(private val expectedCount: Int) : ViewAssertion {
+
+        override fun check(view: View, noViewFoundException: NoMatchingViewException?) {
+            if (noViewFoundException != null) {
+                throw noViewFoundException
+            }
+
+            val recyclerView = view as RecyclerView
+            val adapter = recyclerView.adapter
+            assertThat(adapter!!.itemCount, `is`(expectedCount))
+        }
+    }
+
+    @After
+    @Throws(Exception::class)
+    fun tearDown() {
+        server!!.shutdown()
+    }
 
 }
