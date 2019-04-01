@@ -16,6 +16,6 @@ interface StackOverflowService {
     ): Observable<UserWrapper>
 
     companion object {
-        var BASIC_URL = "https://api.stackexchange.com/"
+        var BASE_URL = "https://api.stackexchange.com/"
     }
 }

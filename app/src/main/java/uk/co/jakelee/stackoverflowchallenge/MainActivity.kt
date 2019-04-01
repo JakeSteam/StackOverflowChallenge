@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(StackOverflowService.BASIC_URL)
+            .baseUrl(StackOverflowService.BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -45,14 +45,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun displayLoading() {
+    private fun displayLoading() {
         search_field.isEnabled = false
         search_button.isEnabled = false
         user_list.alpha = 0.5f
         loading_spinner.visibility = View.VISIBLE
     }
 
-    fun hideLoading() {
+    private fun hideLoading() {
         search_field.isEnabled = true
         search_button.isEnabled = true
         user_list.alpha = 1f

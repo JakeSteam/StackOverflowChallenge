@@ -40,7 +40,7 @@ class MainActivityTest {
     fun setUp() {
         server = MockWebServer()
         server!!.start()
-        StackOverflowService.BASIC_URL = server!!.url("/").toString()
+        StackOverflowService.BASE_URL = server!!.url("/").toString()
         Intents.init()
     }
 
