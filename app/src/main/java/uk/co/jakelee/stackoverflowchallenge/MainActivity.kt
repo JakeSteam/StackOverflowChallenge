@@ -30,9 +30,7 @@ class MainActivity : AppCompatActivity() {
             if (!search_field.text.isEmpty())
                 service.getUsers(
                     searchTerm = search_field.text.toString(),
-                    results = 20,
-                    clientId = BuildConfig.SO_CLIENT_ID,
-                    clientSecret = BuildConfig.SO_CLIENT_SECRET
+                    results = 20
                 )
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

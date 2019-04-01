@@ -13,8 +13,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "SO_CLIENT_ID", stackoverflow_client_id
-        buildConfigField "String", "SO_CLIENT_SECRET", stackoverflow_client_secret
     }
     buildTypes {
         release {

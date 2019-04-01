@@ -12,8 +12,6 @@ interface StackOverflowService {
         @Query("max") results: Int,
         @Query("sort") sort: String = "name",
         @Query("order") order: String = "desc",
-        @Query("site") site: String = "stackoverflow",
-        @Query("client_id") clientId: String = "",
-        @Query("client_secret") clientSecret: String = ""
+        @Query("site") site: String = "stackoverflow"
     ): Observable<UserWrapper>
 }
