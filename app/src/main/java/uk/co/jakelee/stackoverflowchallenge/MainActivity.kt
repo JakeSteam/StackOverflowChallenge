@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(getString(R.string.base_url))
+            .baseUrl(ApiConstants.BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
                         user_list.adapter = UserListAdapter(it.users)
                     }, {
                         Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                        user_list.adapter = UserListAdapter(listOf())
                     })
         }
     }
