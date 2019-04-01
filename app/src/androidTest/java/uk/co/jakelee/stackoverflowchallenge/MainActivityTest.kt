@@ -1,10 +1,10 @@
 package uk.co.jakelee.stackoverflowchallenge
 
 import android.content.Intent
-import android.support.test.espresso.NoMatchingViewException
-import android.support.test.espresso.ViewAssertion
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.espresso.NoMatchingViewException
+import androidx.test.espresso.ViewAssertion
+import androidx.test.rule.ActivityTestRule
+import androidx.test.runner.AndroidJUnit4
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import okhttp3.mockwebserver.MockResponse
@@ -15,15 +15,15 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.action.ViewActions.typeText
-import android.support.test.espresso.matcher.ViewMatchers.assertThat
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.contrib.RecyclerViewActions
-import android.support.test.espresso.intent.Intents
-import android.support.test.espresso.intent.Intents.intended
-import android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.matcher.ViewMatchers.assertThat
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import org.hamcrest.CoreMatchers.`is`
 import uk.co.jakelee.stackoverflowchallenge.adapter.UserListAdapter
 
@@ -68,7 +68,7 @@ class MainActivityTest {
         // Then the profile activity should be opened
         onView(withId(R.id.user_list)).perform(RecyclerViewActions.actionOnItemAtPosition<UserListAdapter.ViewHolder>(0, click()))
         Intents.init()
-        intended(hasComponent(UserActivity::class.java!!.getName()))
+        intended(hasComponent(UserActivity::class.java!!.getClassName()))
     }
 
     @After
