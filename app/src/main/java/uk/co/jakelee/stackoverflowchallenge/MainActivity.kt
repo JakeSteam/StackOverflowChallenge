@@ -9,39 +9,38 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import uk.co.jakelee.stackoverflowchallenge.adapter.UserListAdapter
 import uk.co.jakelee.stackoverflowchallenge.api.StackOverflowService
-import uk.co.jakelee.stackoverflowchallenge.model.User
 
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var users: List<User>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.stackexchange.com/")
+            .baseUrl(getString(R.string.base_url))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(StackOverflowService::class.java)
 
         search_button.setOnClickListener { _ ->
-            service.getUsers(
-                searchTerm = search_field.text.toString(),
-                clientId = BuildConfig.SO_CLIENT_ID,
-                clientSecret = BuildConfig.SO_CLIENT_SECRET
-            )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    users = it.users
-                    user_list.adapter = UserListAdapter(it.users)
-                }, {
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                })
+            if (!search_field.text.isEmpty())
+                service.getUsers(
+                    searchTerm = search_field.text.toString(),
+                    results = 20,
+                    clientId = BuildConfig.SO_CLIENT_ID,
+                    clientSecret = BuildConfig.SO_CLIENT_SECRET
+                )
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        user_list.adapter = UserListAdapter(it.users)
+                    }, {
+                        Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                    })
         }
     }
 }

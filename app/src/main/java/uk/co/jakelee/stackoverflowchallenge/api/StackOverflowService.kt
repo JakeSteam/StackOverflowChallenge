@@ -9,7 +9,7 @@ interface StackOverflowService {
     @GET("2.2/users")
     fun getUsers(
         @Query("inname") searchTerm: String,
-        @Query("max") max: Int = 20,
+        @Query("max") results: Int,
         @Query("sort") sort: String = "name",
         @Query("order") order: String = "desc",
         @Query("site") site: String = "stackoverflow",

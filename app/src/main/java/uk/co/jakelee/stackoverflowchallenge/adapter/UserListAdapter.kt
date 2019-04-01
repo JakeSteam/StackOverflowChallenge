@@ -1,4 +1,4 @@
-package uk.co.jakelee.stackoverflowchallenge
+package uk.co.jakelee.stackoverflowchallenge.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import uk.co.jakelee.stackoverflowchallenge.R
+import uk.co.jakelee.stackoverflowchallenge.UserActivity
 import uk.co.jakelee.stackoverflowchallenge.model.User
 
 
@@ -19,7 +21,7 @@ class UserListAdapter (val users: List<User>) : RecyclerView.Adapter<UserListAda
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: UserListAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = users[position]
         holder.userId.text = user.id.toString()
         holder.userName.text = user.name
