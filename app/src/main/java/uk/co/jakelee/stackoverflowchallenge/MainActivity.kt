@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(ApiConstants.BASE_URL)
+            .baseUrl(StackOverflowService.BASIC_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

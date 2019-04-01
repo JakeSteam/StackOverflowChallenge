@@ -32,10 +32,7 @@ import uk.co.jakelee.stackoverflowchallenge.adapter.UserListAdapter
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.Espresso.onView
-
-
-
-
+import uk.co.jakelee.stackoverflowchallenge.api.StackOverflowService
 
 
 @RunWith(AndroidJUnit4::class)
@@ -50,7 +47,7 @@ class MainActivityTest {
     fun setUp() {
         server = MockWebServer()
         server!!.start()
-        ApiConstants.BASE_URL = server!!.url("/").toString()
+        StackOverflowService.BASIC_URL = server!!.url("/").toString()
         Intents.init()
     }
 

@@ -2,7 +2,6 @@
     <string name="app_name">User Search</string>
     <string name="search_prompt">Enter a search term</string>
     <string name="search_button">Search</string>
-    <string name="base_url">https://api.stackexchange.com/</string>
     <string name="user_image_desc">User profile image</string>
     <string name="user_registered_format">dd/MM/yyyy</string>
     <string name="user_registered">Registered on %s</string>

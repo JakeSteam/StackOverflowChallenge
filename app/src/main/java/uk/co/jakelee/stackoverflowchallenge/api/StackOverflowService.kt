@@ -9,9 +9,13 @@ interface StackOverflowService {
     @GET("2.2/users")
     fun getUsers(
         @Query("inname") searchTerm: String,
-        @Query("max") results: Int,
+        @Query("pagesize") results: Int,
         @Query("sort") sort: String = "name",
         @Query("order") order: String = "desc",
         @Query("site") site: String = "stackoverflow"
     ): Observable<UserWrapper>
+
+    companion object {
+        var BASIC_URL = "https://api.stackexchange.com/"
+    }
 }
