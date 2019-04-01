@@ -5,4 +5,7 @@
     <dimen name="user_image_margin">8dp</dimen>
     <dimen name="userrow_id_width">100dp</dimen>
     <dimen name="user_list_margin">8dp</dimen>
+    <dimen name="search_button_margins">8dp</dimen>
+    <dimen name="search_field_margins">8dp</dimen>
+    <dimen name="badges_extra_margin">8dp</dimen>
 </resources>

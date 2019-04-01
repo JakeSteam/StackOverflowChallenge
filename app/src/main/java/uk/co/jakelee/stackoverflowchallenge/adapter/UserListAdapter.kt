@@ -12,9 +12,7 @@ import uk.co.jakelee.stackoverflowchallenge.UserActivity
 import uk.co.jakelee.stackoverflowchallenge.model.User
 
 
-
-class UserListAdapter (private val users: List<User>)
-    : RecyclerView.Adapter<UserListAdapter.ViewHolder>() {
+class UserListAdapter(private val users: List<User>) : RecyclerView.Adapter<UserListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

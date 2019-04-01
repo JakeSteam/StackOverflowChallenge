@@ -12,8 +12,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import uk.co.jakelee.stackoverflowchallenge.adapter.UserListAdapter
 import uk.co.jakelee.stackoverflowchallenge.api.StackOverflowService
 
-
-
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
