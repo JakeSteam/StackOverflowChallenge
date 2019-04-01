@@ -35,13 +35,11 @@
             android:layout_height="0dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/search_field"
-            android:layout_marginBottom="8dp"
+            android:layout_margin="@dimen/user_list_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             tools:listitem="@layout/element_userrow"
-            tools:itemCount="20"
-            android:layout_marginEnd="8dp"/>
+            tools:itemCount="@integers/num_results"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

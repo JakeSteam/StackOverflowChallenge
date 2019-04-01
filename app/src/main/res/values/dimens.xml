@@ -4,4 +4,5 @@
     <dimen name="user_image_height">200dp</dimen>
     <dimen name="user_image_margin">8dp</dimen>
     <dimen name="userrow_id_width">100dp</dimen>
+    <dimen name="user_list_margin">8dp</dimen>
 </resources>

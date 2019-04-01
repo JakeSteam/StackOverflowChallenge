@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             if (!search_field.text.isEmpty())
                 service.getUsers(
                     searchTerm = search_field.text.toString(),
-                    results = 20
+                    results = resources.getInteger(R.integer.num_results)
                 )
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
