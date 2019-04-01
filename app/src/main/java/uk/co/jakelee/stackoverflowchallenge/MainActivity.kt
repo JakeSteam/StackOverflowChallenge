@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
                         user_list.adapter = UserListAdapter(it.users)
                     }, {
                         Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                        user_list.adapter = UserListAdapter(listOf())
                     })
         }
     }

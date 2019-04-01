@@ -19,19 +19,30 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.not
 import uk.co.jakelee.stackoverflowchallenge.adapter.UserListAdapter
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.RootMatchers.withDecorView
+import androidx.test.espresso.Espresso.onView
+
+
+
+
+
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
     @get:Rule
-    var mActivityRule = ActivityTestRule<MainActivity>(MainActivity::class.java, true, false)
+    var mainActivityRule = ActivityTestRule<MainActivity>(MainActivity::class.java, true, false)
 
     private var server: MockWebServer? = null
 
@@ -40,11 +51,25 @@ class MainActivityTest {
         server = MockWebServer()
         server!!.start()
         ApiConstants.BASE_URL = server!!.url("/").toString()
+        Intents.init()
     }
 
     @Test
-    fun badResponseTest() {
-        // server returns error
+    fun badRequestTest() {
+        val errorText = "Search"
+        server!!.enqueue(
+            MockResponse()
+                .setResponseCode(404)
+                .setBody(errorText)
+        )
+
+        // Given a user is on the main activity
+        // When an invalid search is performed
+        // Then no results should be shown
+        mainActivityRule.launchActivity(Intent())
+        onView(withId(R.id.search_field)).perform(typeText("test"))
+        onView(withId(R.id.search_button)).perform(click())
+        onView(withId(R.id.user_list)).check(RecyclerViewItemCountAssertion(0))
     }
 
     @Test
@@ -58,21 +83,21 @@ class MainActivityTest {
         // Given a user is on the main activity
         // When a search is performed
         // Then the correct number of results should be displayed
-        mActivityRule.launchActivity(Intent())
+        mainActivityRule.launchActivity(Intent())
         onView(withId(R.id.search_field)).perform(typeText("test"))
         onView(withId(R.id.search_button)).perform(click())
         onView(withId(R.id.user_list)).check(RecyclerViewItemCountAssertion(2))
 
         // Given the user is looking at a list of results
         // When one is tapped
-        // Then the profile activity should be opened
+        // Then the user activity should be opened
         onView(withId(R.id.user_list)).perform(RecyclerViewActions.actionOnItemAtPosition<UserListAdapter.ViewHolder>(0, click()))
-        Intents.init()
-        intended(hasComponent(UserActivity::class.java!!.getClassName()))
+        intended(hasComponent(UserActivity::class.java!!.getName()))
     }
 
     @After
     fun tearDown() {
+        Intents.release()
         server!!.shutdown()
     }
 
@@ -88,61 +113,58 @@ class MainActivityTest {
         }
     }
 
-    private val expectedUsername = "username1"
     private val successfulResponse = "{  \n" +
             "   \"items\":[  \n" +
             "      {  \n" +
             "         \"badge_counts\":{  \n" +
-            "            \"bronze\":0,\n" +
-            "            \"silver\":0,\n" +
-            "            \"gold\":0\n" +
+            "            \"bronze\":1,\n" +
+            "            \"silver\":2,\n" +
+            "            \"gold\":3\n" +
             "         },\n" +
-            "         \"account_id\":9123924,\n" +
+            "         \"account_id\":123456,\n" +
             "         \"is_employee\":false,\n" +
-            "         \"last_modified_date\":1483458528,\n" +
-            "         \"last_access_date\":1477396052,\n" +
+            "         \"last_modified_date\":1,\n" +
+            "         \"last_access_date\":1,\n" +
             "         \"reputation_change_year\":0,\n" +
             "         \"reputation_change_quarter\":0,\n" +
             "         \"reputation_change_month\":0,\n" +
             "         \"reputation_change_week\":0,\n" +
             "         \"reputation_change_day\":0,\n" +
-            "         \"reputation\":6,\n" +
-            "         \"creation_date\":1472832455,\n" +
+            "         \"reputation\":100,\n" +
+            "         \"creation_date\":1,\n" +
             "         \"user_type\":\"registered\",\n" +
-            "         \"user_id\":6788436,\n" +
-            "         \"link\":\"https://stackoverflow.com/users/6788436/1whispers\",\n" +
-            "         \"profile_image\":\"https://lh4.googleusercontent.com/-Ehl6AMXza6s/AAAAAAAAAAI/AAAAAAAAAA0/a8Vr8qFAhGE/photo.jpg?sz=128\",\n" +
+            "         \"user_id\":123456,\n" +
+            "         \"link\":\"https://stackoverflow.com/users/0/test\",\n" +
+            "         \"profile_image\":\"https://via.placeholder.com/400x400\",\n" +
             "         \"display_name\":\"username1\"\n" +
             "      },\n" +
             "      {  \n" +
             "         \"badge_counts\":{  \n" +
-            "            \"bronze\":0,\n" +
-            "            \"silver\":0,\n" +
-            "            \"gold\":0\n" +
+            "            \"bronze\":1,\n" +
+            "            \"silver\":2,\n" +
+            "            \"gold\":3\n" +
             "         },\n" +
-            "         \"account_id\":2748769,\n" +
+            "         \"account_id\":1234567,\n" +
             "         \"is_employee\":false,\n" +
-            "         \"last_modified_date\":1381548945,\n" +
-            "         \"last_access_date\":1504702805,\n" +
+            "         \"last_modified_date\":1,\n" +
+            "         \"last_access_date\":1,\n" +
             "         \"reputation_change_year\":0,\n" +
             "         \"reputation_change_quarter\":0,\n" +
             "         \"reputation_change_month\":0,\n" +
             "         \"reputation_change_week\":0,\n" +
             "         \"reputation_change_day\":0,\n" +
-            "         \"reputation\":1,\n" +
-            "         \"creation_date\":1368156891,\n" +
+            "         \"reputation\":101,\n" +
+            "         \"creation_date\":1,\n" +
             "         \"user_type\":\"registered\",\n" +
-            "         \"user_id\":2368582,\n" +
-            "         \"location\":\"chennai\",\n" +
-            "         \"website_url\":\"http://www.twitter.com/iamvasi\",\n" +
-            "         \"link\":\"https://stackoverflow.com/users/2368582/1vashist-marichamy\",\n" +
-            "         \"profile_image\":\"https://i.stack.imgur.com/lOixV.jpg?s=128&g=1\",\n" +
-            "         \"display_name\":\"1Vashist Marichamy\"\n" +
+            "         \"user_id\":1234567,\n" +
+            "         \"link\":\"https://stackoverflow.com/users/1/test\",\n" +
+            "         \"profile_image\":\"https://via.placeholder.com/400x400\",\n" +
+            "         \"display_name\":\"username2\"\n" +
             "      }\n" +
             "   ],\n" +
             "   \"has_more\":true,\n" +
             "   \"quota_max\":300,\n" +
-            "   \"quota_remaining\":233\n" +
+            "   \"quota_remaining\":300\n" +
             "}"
 
 }
