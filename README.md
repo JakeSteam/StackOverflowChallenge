@@ -2,7 +2,7 @@
 
 This app allows searching for users on StackOverflow, and viewing limited information about them. It also has relatively comprehensive UI tests.
 
-The architecture is very simple due to only having one piece of functionality, and requiring activities instead of fragments. The project could easily be converted to MVP if further functionality was to be added.
+The architecture is very simple due to only having one piece of functionality, and requiring activities instead of fragments. Users are passed to the `UserActivity` as a parcelable as they're small objects. The project could easily be converted to MVP if further functionality was to be added.
 
 
 ## Setup instructions
