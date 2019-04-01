@@ -1,6 +1,6 @@
 package uk.co.jakelee.stackoverflowchallenge.model
 
-class Badge(
+data class Badge(
     val badgeType: String,
     val count: Int
 )
