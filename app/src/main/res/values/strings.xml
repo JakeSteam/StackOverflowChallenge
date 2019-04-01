@@ -3,4 +3,10 @@
     <string name="search_prompt">Enter a search term</string>
     <string name="search_button">Search</string>
     <string name="base_url">https://api.stackexchange.com/</string>
+    <string name="user_image_desc">User profile image</string>
+    <string name="user_registered_format">dd/MM/yyyy</string>
+    <string name="user_registered">Registered on %s</string>
+    <string name="user_age">%s years old</string>
+    <string name="user_badges">%d gold, %d silver, %d bronze badges</string>
+    <string name="user_reputation">%d reputation</string>
 </resources>

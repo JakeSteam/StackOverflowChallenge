@@ -38,8 +38,7 @@ data class User (
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readParcelable(BadgeList::class.java.classLoader)!!
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
