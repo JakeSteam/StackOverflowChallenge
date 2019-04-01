@@ -20,17 +20,76 @@ import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.typeText
 import android.support.test.espresso.matcher.ViewMatchers.assertThat
 import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.contrib.RecyclerViewActions
+import android.support.test.espresso.intent.Intents
+import android.support.test.espresso.intent.Intents.intended
+import android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import org.hamcrest.CoreMatchers.`is`
+import uk.co.jakelee.stackoverflowchallenge.adapter.UserListAdapter
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
     @get:Rule
     var mActivityRule = ActivityTestRule<MainActivity>(MainActivity::class.java, true, false)
-    
+
     private var server: MockWebServer? = null
 
-    private val response = "{  \n" +
+    @Before
+    fun setUp() {
+        server = MockWebServer()
+        server!!.start()
+        ApiConstants.BASE_URL = server!!.url("/").toString()
+    }
+
+    @Test
+    fun badResponseTest() {
+        // server returns error
+    }
+
+    @Test
+    fun fullFlowTest() {
+        server!!.enqueue(
+            MockResponse()
+                .setResponseCode(200)
+                .setBody(successfulResponse)
+        )
+
+        // Given a user is on the main activity
+        // When a search is performed
+        // Then the correct number of results should be displayed
+        mActivityRule.launchActivity(Intent())
+        onView(withId(R.id.search_field)).perform(typeText("test"))
+        onView(withId(R.id.search_button)).perform(click())
+        onView(withId(R.id.user_list)).check(RecyclerViewItemCountAssertion(2))
+
+        // Given the user is looking at a list of results
+        // When one is tapped
+        // Then the profile activity should be opened
+        onView(withId(R.id.user_list)).perform(RecyclerViewActions.actionOnItemAtPosition<UserListAdapter.ViewHolder>(0, click()))
+        Intents.init()
+        intended(hasComponent(UserActivity::class.java!!.getName()))
+    }
+
+    @After
+    fun tearDown() {
+        server!!.shutdown()
+    }
+
+    // Converted from https://stackoverflow.com/a/37339656/608312
+    inner class RecyclerViewItemCountAssertion(private val expectedCount: Int) : ViewAssertion {
+        override fun check(view: View, noViewFoundException: NoMatchingViewException?) {
+            if (noViewFoundException != null) {
+                throw noViewFoundException
+            }
+            val recyclerView = view as RecyclerView
+            val adapter = recyclerView.adapter
+            assertThat(adapter!!.itemCount, `is`(expectedCount))
+        }
+    }
+
+    private val expectedUsername = "username1"
+    private val successfulResponse = "{  \n" +
             "   \"items\":[  \n" +
             "      {  \n" +
             "         \"badge_counts\":{  \n" +
@@ -53,7 +112,7 @@ class MainActivityTest {
             "         \"user_id\":6788436,\n" +
             "         \"link\":\"https://stackoverflow.com/users/6788436/1whispers\",\n" +
             "         \"profile_image\":\"https://lh4.googleusercontent.com/-Ehl6AMXza6s/AAAAAAAAAAI/AAAAAAAAAA0/a8Vr8qFAhGE/photo.jpg?sz=128\",\n" +
-            "         \"display_name\":\"1whispers\"\n" +
+            "         \"display_name\":\"username1\"\n" +
             "      },\n" +
             "      {  \n" +
             "         \"badge_counts\":{  \n" +
@@ -85,52 +144,5 @@ class MainActivityTest {
             "   \"quota_max\":300,\n" +
             "   \"quota_remaining\":233\n" +
             "}"
-
-    @Before
-    @Throws(Exception::class)
-    fun setUp() {
-        server = MockWebServer()
-        server!!.start()
-        ApiConstants.BASE_URL = server!!.url("/").toString()
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun fullFlowTest() {
-        server!!.enqueue(
-            MockResponse()
-                .setResponseCode(200)
-                .setBody(response)
-        )
-
-        val intent = Intent()
-        mActivityRule.launchActivity(intent)
-
-        onView(withId(R.id.search_field)).perform(typeText("test"))
-        onView(withId(R.id.search_button)).perform(click())
-        onView(withId(R.id.user_list)).check(RecyclerViewItemCountAssertion(2))
-
-
-    }
-
-
-    inner class RecyclerViewItemCountAssertion(private val expectedCount: Int) : ViewAssertion {
-
-        override fun check(view: View, noViewFoundException: NoMatchingViewException?) {
-            if (noViewFoundException != null) {
-                throw noViewFoundException
-            }
-
-            val recyclerView = view as RecyclerView
-            val adapter = recyclerView.adapter
-            assertThat(adapter!!.itemCount, `is`(expectedCount))
-        }
-    }
-
-    @After
-    @Throws(Exception::class)
-    fun tearDown() {
-        server!!.shutdown()
-    }
 
 }
