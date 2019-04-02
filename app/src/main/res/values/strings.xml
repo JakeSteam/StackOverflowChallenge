@@ -8,6 +8,6 @@
     <string name="user_registered_format">dd/MM/yyyy</string>
     <string name="user_registered">Registered on %s</string>
     <string name="user_age">%s years old</string>
-    <string name="user_badges">%d gold, %d silver, %d bronze badges</string>
+    <string name="user_badges">%1$d gold, %2$d silver, %3$dd bronze badges</string>
     <string name="user_reputation">%d reputation</string>
 </resources>
